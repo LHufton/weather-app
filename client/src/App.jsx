@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Forecast from './components/Forecast'
-import LocationManager from './components/LocationManager'
-import './assets/styles/styles.css'
-import './assets/styles/forecast.css'
+import './App.css'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { BASE_URL, API_KEY } from './globals'
+import MovieList from './components/MovieList'
+import MovieDetails from './components/MovieDetails'
 
 const App = () => {
   return (
