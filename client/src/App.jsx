@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Forecast from './components/Forecast'
 import LocationManager from './components/LocationManager'
 import './assets/styles/styles.css'
+import './assets/styles/forecast.css'
 
 const App = () => {
   return (
