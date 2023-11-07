@@ -3,8 +3,8 @@ import { WeatherContext } from '../../contexts/WeatherContext'
 import { fetchForecast } from '../../services/api'
 
 const Forecast = () => {
-  const { forecastData, setForecastData, error, setError } =
-    useContext(WeatherContext)
+  // const { forecastData, setForecastData, error, setError } =
+  useContext(WeatherContext)
   const [zipcode, setZipcode] = useState('')
 
   const getForecast = async () => {

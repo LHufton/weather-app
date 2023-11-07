@@ -1,7 +1,6 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Forecast from './components/Forecast/Forecast'
-import Location from './components/LocationManager/LocationManager'
 import LocationManager from './components/LocationManager/LocationManager'
 
 const App = () => {
@@ -9,9 +8,8 @@ const App = () => {
     <div>
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="about" element={<Forecast />} />
-          <Route path="games/Details/:gameId" element={<LocationManager />} />
+          <Route path="/" element={<Forecast />} />
+          <Route path="/location" element={<LocationManager />} />
         </Routes>
       </main>
     </div>
