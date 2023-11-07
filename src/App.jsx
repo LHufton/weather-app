@@ -1,9 +1,10 @@
 import './App.css'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { BASE_URL, API_KEY } from './globals'
-import MovieList from './components/MovieList'
-import MovieDetails from './components/MovieDetails'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+// import { useState, useEffect } from 'react'
+// import axios from 'axios'
+// import { BASE_URL, API_KEY } from './globals'
+// import MovieList from './components/MovieList'
+// import MovieDetails from './components/MovieDetails'
 
 const App = () => {
   return (
