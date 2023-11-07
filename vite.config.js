@@ -8,9 +8,7 @@ console.log('Config is being read')
 export default defineConfig({
   plugins: [react()],
   esbuild: {
-    loader: {
-      '.js': 'jsx'
-    }
+    loader: 'jsx'
   },
   server: {
     https: false,

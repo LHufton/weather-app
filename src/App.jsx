@@ -1,21 +1,20 @@
 import './App.css'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-// import { useState, useEffect } from 'react'
-// import axios from 'axios'
-// import { BASE_URL, API_KEY } from './globals'
-// import MovieList from './components/MovieList'
-// import MovieDetails from './components/MovieDetails'
+import { Route, Routes } from 'react-router-dom'
+import Forecast from './components/Forecast/Forecast'
+import Location from './components/LocationManager/LocationManager'
+import LocationManager from './components/LocationManager/LocationManager'
 
 const App = () => {
   return (
-    <Router>
-      <div className="app-container">
-        <Switch>
-          <Route exact path="/" component={Forecast} />
-          <Route path="/locations" component={LocationManager} />
-        </Switch>
-      </div>
-    </Router>
+    <div>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="about" element={<Forecast />} />
+          <Route path="games/Details/:gameId" element={<LocationManager />} />
+        </Routes>
+      </main>
+    </div>
   )
 }
 
