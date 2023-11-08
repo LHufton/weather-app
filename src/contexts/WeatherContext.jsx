@@ -1,23 +1,16 @@
-import React, { createContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 
-export const WeatherContext = createContext()
+// Create a context with a default value
+export const WeatherContext = createContext() // <-- Add 'export' here
+
+export const useWeather = () => useContext(WeatherContext)
 
 export const WeatherProvider = ({ children }) => {
-  const [forecastData, setForecastData] = useState(null)
-  const [savedLocations, setSavedLocations] = useState([])
-  const [error, setError] = useState(null)
+  const [weatherData, setWeatherData] = useState(null)
+  // Your logic to fetch and store weather data goes here
 
   return (
-    <WeatherContext.Provider
-      value={{
-        forecastData,
-        setForecastData,
-        savedLocations,
-        setSavedLocations,
-        error,
-        setError
-      }}
-    >
+    <WeatherContext.Provider value={{ weatherData, setWeatherData }}>
       {children}
     </WeatherContext.Provider>
   )
