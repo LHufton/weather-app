@@ -7,7 +7,6 @@ export const useWeather = () => useContext(WeatherContext)
 
 export const WeatherProvider = ({ children }) => {
   const [weatherData, setWeatherData] = useState(null)
-  // Your logic to fetch and store weather data goes here
 
   return (
     <WeatherContext.Provider value={{ weatherData, setWeatherData }}>
