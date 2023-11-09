@@ -1,1 +1,6 @@
-## Weather App....stay tuned for a readMe. 
+## Weather Forecast App
+
+### Technologies used: MERN. VIte Heroku.
+
+
+#### Stay Tuned
