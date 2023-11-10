@@ -1,21 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { BASE_URL, API_KEY } from '../../globals'
 
 const WeatherDetails = ({ selectedForecast, setSelectedForecast }) => {
+  const [weatherDetails, setWeatherDetails] = useState({})
+
+  useEffect(() => {
+    if (selectedForecast) {
+      const fetchWeatherDetails = async () => {
+        try {
+          const response = await axios.get(
+            `${BASE_URL}/weather/${selectedForecast.id}?api_key=${API_KEY}`
+          )
+          setWeatherDetails(response.data)
+        } catch (error) {
+          console.error('Error fetching detailed weather data', error)
+        }
+      }
+
+      fetchWeatherDetails()
+    }
+  }, [selectedForecast])
+
   if (!selectedForecast) {
-    // Render nothing if there's no selected forecast
     return null
   }
 
-  // Function to clear the selected forecast and show the list again
   const backToList = () => setSelectedForecast(null)
 
   return (
     <div className="weather-details">
-      <button onClick={backToList}>Back to List</button>
-      <h2>Weather Details for {selectedForecast.date}</h2>
-      <p>Temperature: {selectedForecast.temperature}°C</p>
-      <p>Description: {selectedForecast.description}</p>
-      {/* Include more detailed information as required */}
+      <button onClick={backToList}>Back</button>
+      <h2>
+        Weather Details for {weatherDetails.date || selectedForecast.date}
+      </h2>
+      <p>
+        Temperature:{' '}
+        {weatherDetails.temperature || selectedForecast.temperature}°C
+      </p>
+      <p>
+        Description:{' '}
+        {weatherDetails.description || selectedForecast.description}
+      </p>
     </div>
   )
 }
