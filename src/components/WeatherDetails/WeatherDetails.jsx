@@ -6,12 +6,16 @@ const WeatherDetails = ({ selectedForecast, setSelectedForecast }) => {
   const [weatherDetails, setWeatherDetails] = useState({})
 
   useEffect(() => {
-    if (selectedForecast) {
+    if (selectedForecast && selectedForecast.lat && selectedForecast.lon) {
       const fetchWeatherDetails = async () => {
         try {
-          const response = await axios.get(
-            `${BASE_URL}/weather/${selectedForecast.id}?api_key=${API_KEY}`
-          )
+          const response = await axios.get(`${BASE_URL}/weather`, {
+            params: {
+              lat: selectedForecast.lat,
+              lon: selectedForecast.lon,
+              appid: API_KEY
+            }
+          })
           setWeatherDetails(response.data)
         } catch (error) {
           console.error('Error fetching detailed weather data', error)
@@ -31,17 +35,9 @@ const WeatherDetails = ({ selectedForecast, setSelectedForecast }) => {
   return (
     <div className="weather-details">
       <button onClick={backToList}>Back</button>
-      <h2>
-        Weather Details for {weatherDetails.date || selectedForecast.date}
-      </h2>
-      <p>
-        Temperature:{' '}
-        {weatherDetails.temperature || selectedForecast.temperature}°C
-      </p>
-      <p>
-        Description:{' '}
-        {weatherDetails.description || selectedForecast.description}
-      </p>
+      <h2>Weather Details</h2>
+      <p>Temperature: {weatherDetails.main?.temp}°C</p>
+      <p>Description: {weatherDetails.weather?.[0]?.description}</p>
     </div>
   )
 }
