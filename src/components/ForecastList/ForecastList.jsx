@@ -16,7 +16,7 @@ const ForecastList = () => {
               units: 'imperial'
             }
           })
-          setForecastList(response.data.list) // Adjust according to the actual structure of your API response
+          setForecastList(response.data.list)
         } catch (error) {
           console.error('Error fetching forecast data', error)
         }

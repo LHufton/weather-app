@@ -1,45 +1,55 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { BASE_URL, API_KEY } from '../../globals'
 
-const WeatherDetails = ({ selectedForecast, setSelectedForecast }) => {
-  const [weatherDetails, setWeatherDetails] = useState({})
+const WeatherApp = () => {
+  const [cityName, setCityName] = useState('')
+  const [weatherData, setWeatherData] = useState(null)
+  const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (selectedForecast && selectedForecast.lat && selectedForecast.lon) {
-      const fetchWeatherDetails = async () => {
-        try {
-          const response = await axios.get(`${BASE_URL}/weather`, {
-            params: {
-              lat: selectedForecast.lat,
-              lon: selectedForecast.lon,
-              appid: API_KEY
-            }
-          })
-          setWeatherDetails(response.data)
-        } catch (error) {
-          console.error('Error fetching detailed weather data', error)
+  const fetchWeatherData = async () => {
+    try {
+      console.log('Fetching weather data for:', cityName)
+      const response = await axios.get(`${BASE_URL}/weather`, {
+        params: {
+          q: cityName,
+          appid: API_KEY
         }
-      }
-
-      fetchWeatherDetails()
+      })
+      console.log(response.data)
+      setWeatherData(response.data)
+      setError('')
+    } catch (error) {
+      setError('Failed to fetch weather data')
+      console.error('Error fetching weather data:', error)
     }
-  }, [selectedForecast])
-
-  if (!selectedForecast) {
-    return null
   }
 
-  const backToList = () => setSelectedForecast(null)
+  const handleSearch = () => {
+    if (cityName.trim() !== '') {
+      fetchWeatherData()
+    }
+  }
 
   return (
-    <div className="weather-details">
-      <button onClick={backToList}>Back</button>
-      <h2>Weather Details</h2>
-      <p>Temperature: {weatherDetails.main?.temp}°C</p>
-      <p>Description: {weatherDetails.weather?.[0]?.description}</p>
+    <div>
+      <input
+        type="text"
+        value={cityName}
+        onChange={(e) => setCityName(e.target.value)}
+        placeholder="Enter city name"
+      />
+      <button onClick={handleSearch}>Get Weather</button>
+      {error && <p>{error}</p>}
+      {weatherData && (
+        <div>
+          <h2>Weather Details for {weatherData.name}</h2>
+          <p>Temperature: {weatherData.main.temp}°C</p>
+          <p>Description: {weatherData.weather[0].description}</p>
+        </div>
+      )}
     </div>
   )
 }
 
-export default WeatherDetails
+export default WeatherApp
