@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BASE_URL, API_KEY } from '../../globals'
+
 const ForecastList = () => {
   const [forecastList, setForecastList] = useState([])
   const [city, setCity] = useState('')
+  const [inputValue, setInputValue] = useState('')
 
   useEffect(() => {
     if (city) {
@@ -21,10 +23,13 @@ const ForecastList = () => {
           console.error('Error fetching forecast data', error)
         }
       }
-
       getForecastList()
     }
   }, [city])
+
+  const handleSearch = () => {
+    setCity(inputValue)
+  }
 
   return (
     <div id="forecast">
@@ -32,19 +37,17 @@ const ForecastList = () => {
         <h2>Look up your city</h2>
         <input
           type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter city name"
         />
-        <button onClick={() => setCity(city)}>Search</button>
+        <button onClick={handleSearch}>Search</button>
 
         {forecastList.map((forecast, index) => (
           <div key={index} className="forecast-item">
-            {/* Render your forecast data here */}
-            <h3>{forecast.date}</h3>{' '}
-            {/* Adjust based on actual data structure */}
-            <p>Temperature: {forecast.temperature}°C</p>
-            <p>Description: {forecast.description}</p>
+            <h3>{new Date(forecast.dt * 1000).toLocaleDateString()}</h3>
+            <p>Temperature: {forecast.main.temp}°F</p>
+            <p>Description: {forecast.weather[0].description}</p>
           </div>
         ))}
       </div>
