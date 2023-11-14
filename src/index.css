@@ -320,11 +320,11 @@ input[type="submit"].hollow {
 } */
 
 input:focus {
-  outline: 2px solid var(--pink);
+  outline: 2px solid var(--orange-200);
   outline-offset: -2px;
   transform: scale(1.025);
   transition: none;
-  background: var(--grey-80);
+  background: var(--grey-50);
 }
 
 hr {
