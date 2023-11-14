@@ -246,9 +246,8 @@ input[type="submit"] {
   padding: 1em 2em;
   font-size: var(--font-size-default);
   color: var(--white);
-  /* border: none;  */
-  border-radius: 250%;
-  width: 10px;
+  border: none; 
+  width: 150px;
   -webkit-transition: 0.2s ease-out;
   -o-transition: 0.2s ease-out;
   transition: 0.2s ease-out;
@@ -321,7 +320,7 @@ input[type="submit"].hollow {
 } */
 
 input:focus {
-  outline: 2px solid var(--orange-300);
+  outline: 2px solid var(--pink);
   outline-offset: -2px;
   transform: scale(1.025);
   transition: none;
