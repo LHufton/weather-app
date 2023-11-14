@@ -33,13 +33,15 @@ const WeatherApp = () => {
 
   return (
     <div>
-      <input
-        type="text"
-        value={cityName}
-        onChange={(e) => setCityName(e.target.value)}
-        placeholder="Enter city name"
-      />
-      <button onClick={handleSearch}>Get Weather</button>
+      <div>
+        <input
+          type="text"
+          value={cityName}
+          onChange={(e) => setCityName(e.target.value)}
+          placeholder="Enter city name"
+        />
+        <button onClick={handleSearch}>Get Weather</button>
+      </div>
       {error && <p>{error}</p>}
       {weatherData && (
         <div>
