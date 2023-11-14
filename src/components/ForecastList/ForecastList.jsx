@@ -33,7 +33,7 @@ const ForecastList = () => {
 
   return (
     <div id="forecast">
-      <div className="forecast-list">
+      <div className="auto-grid-medium">
         <h2>Look up your city</h2>
         <input
           type="text"
@@ -45,7 +45,7 @@ const ForecastList = () => {
 
         {forecastList.map((forecast, index) => (
           <div key={index} className="forecast-item">
-            <h3>{new Date(forecast.dt * 1000).toLocaleDateString()}</h3>
+            <h3>{new Date(forecast.dt * 1000).toLocaleString()}</h3>
             <p>Temperature: {forecast.main.temp}°F</p>
             <p>Description: {forecast.weather[0].description}</p>
           </div>
