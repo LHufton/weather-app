@@ -34,7 +34,7 @@ const ForecastList = () => {
   return (
     <div id="forecast">
       <div className="auto-grid-medium">
-        <h2>Look up your city</h2>
+        <h2>Five Day Forecast</h2>
         <input
           type="text"
           value={inputValue}
