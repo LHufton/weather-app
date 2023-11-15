@@ -1,4 +1,4 @@
-#forecast {
+/* .forecast {
   display: flex;
   align-content: center;
   align-items: center;
@@ -8,7 +8,7 @@
   padding: 0 10px;
   width: 50px;
   border-radius: 5px;
-  /* background-color: var(--warning); */
+  background-color: var(--warning);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -24,4 +24,4 @@
   flex-wrap: wrap;
   justify-content: center;
   margin: 0 -10px;
-}
+} */

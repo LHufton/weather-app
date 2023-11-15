@@ -1,43 +1,31 @@
 import './App.css'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { BASE_URL, API_KEY } from './globals'
+import { useState } from 'react'
 import ForecastList from './components/ForecastList/ForecastList'
-import WeatherDetails from './components/WeatherDetails/WeatherDetails'
+import WeatherDetails from './components/WeatherDetails/WeatherDetails' // Correctly importing WeatherDetails
 
 const App = () => {
-  const [forecasts, setForecasts] = useState([])
-  const [selectedForecast, setSelectedForecast] = useState(null)
+  const [city, setCity] = useState('')
+  const [inputValue, setInputValue] = useState('')
 
-  useEffect(() => {
-    const getWeather = async () => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/forecast?api_key=${API_KEY}&q=YOUR_QUERY_HERE`
-        )
-        setForecasts(response.data.forecasts)
-      } catch (error) {
-        console.error('Error fetching weather data', error)
-      }
-    }
-
-    getWeather()
-  }, [])
-
-  const selectForecast = (forecastId) => {
-    setSelectedForecast(forecastId)
+  const handleCitySearch = () => {
+    setCity(inputValue)
   }
 
-  let content = selectedForecast ? (
-    <WeatherDetails
-      setSelectedForecast={setSelectedForecast}
-      selectedForecast={selectedForecast}
-    />
-  ) : (
-    <ForecastList selectForecast={selectForecast} forecasts={forecasts} />
+  return (
+    <div className="App">
+      <div className="search-bar">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Enter City"
+        />
+        <button onClick={handleCitySearch}>Get Weather</button>
+      </div>
+      <WeatherDetails city={city} />
+      <ForecastList city={city} />
+    </div>
   )
-
-  return <div className="App">{content}</div>
 }
 
 export default App

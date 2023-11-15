@@ -463,12 +463,12 @@ label.radio input:checked ~ .checkmark:after {
 } */
 
 /* On mouse-over, add a grey background color */
-/* label.checkbox:hover input ~ .checkmark,
+label.checkbox:hover input ~ .checkmark,
 label.radio:hover input ~ .checkmark,
 input:hover {
-  background: var(--grey-80);
+  background: var(--grey-10);
   transition: none;
-} */
+}
 
 /* auto grid */
 

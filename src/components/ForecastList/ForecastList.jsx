@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { BASE_URL, API_KEY } from '../../globals'
+import './ForecastList.css'
 
-const ForecastList = () => {
-  const [forecastList, setForecastList] = useState([])
-  const [city, setCity] = useState('')
-  const [inputValue, setInputValue] = useState('')
+const ForecastList = ({ city }) => {
+  const [groupedForecasts, setGroupedForecasts] = useState({})
 
   useEffect(() => {
     if (city) {
@@ -18,7 +17,18 @@ const ForecastList = () => {
               units: 'imperial'
             }
           })
-          setForecastList(response.data.list)
+
+          // Group forecasts by day
+          const groupedByDay = response.data.list.reduce((acc, forecast) => {
+            const date = new Date(forecast.dt * 1000).toLocaleDateString()
+            if (!acc[date]) {
+              acc[date] = []
+            }
+            acc[date].push(forecast)
+            return acc
+          }, {})
+
+          setGroupedForecasts(groupedByDay)
         } catch (error) {
           console.error('Error fetching forecast data', error)
         }
@@ -27,27 +37,23 @@ const ForecastList = () => {
     }
   }, [city])
 
-  const handleSearch = () => {
-    setCity(inputValue)
-  }
-
   return (
-    <div id="forecast">
+    <div className="forecast">
       <div className="auto-grid-medium">
         <h2>Five Day Forecast</h2>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Enter city name"
-        />
-        <button onClick={handleSearch}>Search</button>
-
-        {forecastList.map((forecast, index) => (
-          <div key={index} className="forecast-item">
-            <h3>{new Date(forecast.dt * 1000).toLocaleString()}</h3>
-            <p>Temperature: {forecast.main.temp}°F</p>
-            <p>Description: {forecast.weather[0].description}</p>
+        {Object.keys(groupedForecasts).map((date) => (
+          <div key={date} className="forecast-day">
+            <h3>{date}</h3>
+            {groupedForecasts[date].map((forecast, index) => (
+              <div key={index} className="forecast-item">
+                <p>Time: {new Date(forecast.dt * 1000).toLocaleTimeString()}</p>
+                <p>Temperature: {forecast.main.temp}°F</p>
+                <p>Feels Like: {forecast.main.feels_like}°F</p>
+                <p>High: {forecast.main.temp_max}°F</p>
+                <p>Low: {forecast.main.temp_min}°F</p>
+                <p>Description: {forecast.weather[0].description}</p>
+              </div>
+            ))}
           </div>
         ))}
       </div>

@@ -1,21 +1,11 @@
-/* import React from 'react';
-
-const WeatherDetails = ({ selectedForecast, setSelectedForecast }) => {
-  if (!selectedForecast) {
-    // Render nothing if there's no selected forecast
-    return null;
-  }
-
-  const backToList = () => setSelectedForecast(null);
-
-  return (
-    <div className="weather-details">
-      <button onClick={backToList}>Back to List</button>
-      <h2>Weather Details for {selectedForecast.date}</h2>
-      <p>Temperature: {selectedForecast.temperature}°C</p>
-      <p>Description: {selectedForecast.description}</p>
-    </div>
-  );
-};
-
-export default WeatherDetails; */
+.city-input {
+    width: 100%;
+    height: 40px;
+    border: 100px solid #f21313;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    outline: none;
+}
