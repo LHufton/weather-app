@@ -21,7 +21,7 @@ const App = () => {
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter City"
         />
-        <button type="submit">Get Weather</button>
+        <button type="submit">Search</button>
       </form>
       <WeatherDetails city={city} />
       <ForecastList city={city} />
