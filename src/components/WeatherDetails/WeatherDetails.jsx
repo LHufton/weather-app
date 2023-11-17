@@ -3,15 +3,19 @@ import axios from 'axios'
 import { BASE_URL, API_KEY } from '../../globals'
 import dayIcon from '../../assets/day.svg'
 import nightIcon from '../../assets/night.svg'
-import rainyImage from '../../assets/rainy-1.svg'
+import rainyImage from '../../assets/rainy-7.svg'
 import snowyImage from '../../assets/snowy-1.svg'
 import thunderImage from '../../assets/thunder.svg'
+import cloudyImage from '../../assets/cloudy.svg'
 import defaultImage from '../../assets/weather.svg'
+import './WeatherDetails.css'
 
 const weatherImages = {
   Rain: rainyImage,
   Snow: snowyImage,
   Thunderstorm: thunderImage,
+  Clouds: cloudyImage,
+  Clear: defaultImage,
   default: defaultImage
 }
 
@@ -32,7 +36,11 @@ const WeatherDetails = ({ city }) => {
             }
           })
           setWeatherData(response.data)
-          updateWeatherImage(response.data)
+          const currentCondition = response.data.weather[0].main
+          updateWeatherImage(
+            currentCondition,
+            response.data.weather[0].description
+          )
           updateDayNightImage(response.data)
           setError('')
         } catch (error) {
@@ -47,10 +55,15 @@ const WeatherDetails = ({ city }) => {
     return ((kelvin - 273.15) * 9) / 5 + 32
   }
 
-  const updateWeatherImage = (data) => {
-    const mainWeather = data.weather[0].main
-    const image = weatherImages[mainWeather] || weatherImages.default
-    setWeatherImage(image)
+  const updateWeatherImage = (condition, description) => {
+    if (
+      description.toLowerCase().includes('rain') ||
+      description.toLowerCase().includes('drizzle')
+    ) {
+      setWeatherImage(rainyImage)
+    } else {
+      setWeatherImage(weatherImages[condition] || weatherImages.default)
+    }
   }
 
   const updateDayNightImage = (data) => {
