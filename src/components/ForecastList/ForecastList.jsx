@@ -74,7 +74,7 @@ const ForecastList = ({ city }) => {
   }, [city])
 
   return (
-    <div className="Forecast">
+    <div className="forecast">
       <div className="auto-grid-medium">
         <h2>Five Day Forecast</h2>
         {Object.keys(dailyForecasts).map((dateString) => {
