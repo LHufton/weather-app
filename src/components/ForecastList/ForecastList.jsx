@@ -75,7 +75,7 @@ const ForecastList = ({ city }) => {
 
   return (
     <div className="forecast">
-      <h2>Five Day Forecast</h2>
+      {/* <h2>Five Day Forecast</h2> */}
       <div className="auto-grid-small">
         {Object.keys(dailyForecasts).map((dateString) => {
           const dayData = dailyForecasts[dateString]

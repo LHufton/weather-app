@@ -81,7 +81,7 @@ const WeatherDetails = ({ city }) => {
       {error && <p>{error}</p>}
       {weatherData && (
         <div className="current-weather">
-          <h2> {weatherData.name}</h2>
+          <h2> Current weather in {weatherData.name}</h2>
           <img src={weatherImage} alt="Weather condition" />
           <img
             src={dayNightImage}
