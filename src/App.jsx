@@ -2,6 +2,7 @@ import './App.css'
 import { useState } from 'react'
 import ForecastList from './components/ForecastList/ForecastList'
 import WeatherDetails from './components/WeatherDetails/WeatherDetails'
+import Nav from './components/Nav/Nav'
 
 const App = () => {
   const [city, setCity] = useState('')
@@ -25,6 +26,11 @@ const App = () => {
       </form>
       <WeatherDetails city={city} />
       <ForecastList city={city} />
+      {/* <router>
+        <div>
+          <Nav />
+        </div>
+      </router> */}
     </div>
   )
 }

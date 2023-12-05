@@ -64,6 +64,12 @@ const WeatherDetails = ({ city }) => {
       description.toLowerCase().includes('drizzle')
     ) {
       setWeatherImage(rainyImage)
+    } else if (description.toLowerCase().includes('snow')) {
+      setWeatherImage(snowyImage)
+    } else if (description.toLowerCase().includes('thunder')) {
+      setWeatherImage(thunderImage)
+    } else if (description.toLowerCase().includes('cloud')) {
+      setWeatherImage(cloudyImage)
     } else {
       setWeatherImage(weatherImages[condition] || weatherImages.default)
     }
@@ -81,7 +87,7 @@ const WeatherDetails = ({ city }) => {
       {error && <p>{error}</p>}
       {weatherData && (
         <div className="current-weather">
-          <h2> Current weather in {weatherData.name}</h2>
+          <h2> Currently in {weatherData.name}</h2>
           <img src={weatherImage} alt="Weather condition" />
           <img
             src={dayNightImage}
