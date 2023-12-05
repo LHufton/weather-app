@@ -44,7 +44,10 @@ const WeatherDetails = ({ city }) => {
           updateDayNightImage(response.data)
           setError('')
         } catch (error) {
-          setError('Failed to fetch weather data')
+          setError(
+            'Failed to fetch weather data. Check your network or API key.'
+          )
+          console.error(error) // Log the error for debugging
         }
       }
       fetchWeatherData()
@@ -77,8 +80,8 @@ const WeatherDetails = ({ city }) => {
     <div>
       {error && <p>{error}</p>}
       {weatherData && (
-        <div>
-          <h2>Weather right now in {weatherData.name}</h2>
+        <div className="current-weather">
+          <h2> {weatherData.name}</h2>
           <img src={weatherImage} alt="Weather condition" />
           <img
             src={dayNightImage}
