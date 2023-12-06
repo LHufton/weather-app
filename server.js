@@ -3,6 +3,12 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3001
 
+app.use((req, res, next) => {
+  const clientIP =
+    req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  req.clientIP = clientIP
+  next()
+})
 app.use(express.static(path.join(__dirname, 'dist')))
 
 app.get('*', (req, res) => {
