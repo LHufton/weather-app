@@ -4,8 +4,7 @@ const app = express()
 const PORT = process.env.PORT || 3001
 
 app.use((req, res, next) => {
-  const clientIP =
-    req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress
   req.clientIP = clientIP
   next()
 })
