@@ -85,9 +85,9 @@ const ForecastList = ({ city }) => {
             <div key={dateString} className="forecast-day">
               <h3>{dateString}</h3>
               <img src={icon} alt={dayData.predominantCondition} />
-              <p>High: {dayData.max.toFixed(2)}°F</p>
-              <p>Low: {dayData.min.toFixed(2)}°F</p>
-              <p>Condition: {dayData.predominantCondition}</p>
+              <p>High of {dayData.max.toFixed(2)}°F</p>
+              <p>Low of {dayData.min.toFixed(2)}°F</p>
+              <p> {dayData.predominantCondition}</p>
             </div>
           )
         })}

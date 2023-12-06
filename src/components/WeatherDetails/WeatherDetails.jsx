@@ -59,6 +59,8 @@ const WeatherDetails = ({ city }) => {
   }
 
   const updateWeatherImage = (condition, description) => {
+    console.log('Condition:', condition)
+    console.log('Description:', description)
     if (
       description.toLowerCase().includes('rain') ||
       description.toLowerCase().includes('drizzle')

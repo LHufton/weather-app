@@ -1,4 +1,4 @@
-import './index.css'
+import './App.css'
 import { useState } from 'react'
 import ForecastList from './components/ForecastList/ForecastList'
 import WeatherDetails from './components/WeatherDetails/WeatherDetails'
@@ -8,12 +8,14 @@ const App = () => {
   const [inputValue, setInputValue] = useState('')
 
   const handleCitySearch = (e) => {
-    e.preventDefault() // Prevent the default form submission behavior
+    e.preventDefault()
     setCity(inputValue)
   }
 
   return (
     <div className="App">
+      <h2>Whatever the Weather</h2>
+      <p>Check the weather forecast for any city in the world.</p>
       <form onSubmit={handleCitySearch} className="search-bar">
         <input
           type="text"
@@ -25,11 +27,6 @@ const App = () => {
       </form>
       <WeatherDetails city={city} />
       <ForecastList city={city} />
-      {/* <router>
-        <div>
-          <Nav />
-        </div>
-      </router> */}
     </div>
   )
 }
