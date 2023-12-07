@@ -19,24 +19,70 @@ const weatherImages = {
   default: defaultImage
 }
 
-const WeatherDetails = ({ city }) => {
+const WeatherDetails = () => {
   const [weatherData, setWeatherData] = useState(null)
   const [error, setError] = useState('')
   const [weatherImage, setWeatherImage] = useState(defaultImage)
   const [dayNightImage, setDayNightImage] = useState(dayIcon)
+  const [coordinates, setCoordinates] = useState(null)
 
   useEffect(() => {
-    if (city) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude
+          const longitude = position.coords.longitude
+          setCoordinates({ latitude, longitude })
+        },
+        (error) => {
+          console.error('Error getting coordinates:', error)
+        }
+      )
+    }
+  }, [])
+
+  useEffect(() => {
+    if (coordinates) {
       const fetchWeatherData = async () => {
         try {
           const response = await axios.get(`${BASE_URL}/weather`, {
             params: {
-              q: city,
+              q: `${coordinates.latitude},${coordinates.longitude}`,
               appid: API_KEY
             }
           })
-          setWeatherData(response.data)
+
           const currentCondition = response.data.weather[0].main
+
+          const kelvinToFahrenheit = (kelvin) => {
+            return ((kelvin - 273.15) * 9) / 5 + 32
+          }
+
+          const updateWeatherImage = (condition, description) => {
+            if (
+              description.toLowerCase().includes('rain') ||
+              description.toLowerCase().includes('drizzle')
+            ) {
+              setWeatherImage(rainyImage)
+            } else if (description.toLowerCase().includes('snow')) {
+              setWeatherImage(snowyImage)
+            } else if (description.toLowerCase().includes('thunder')) {
+              setWeatherImage(thunderImage)
+            } else if (description.toLowerCase().includes('cloud')) {
+              setWeatherImage(cloudyImage)
+            } else {
+              setWeatherImage(weatherImages[condition] || weatherImages.default)
+            }
+          }
+
+          const updateDayNightImage = (data) => {
+            const currentTime = new Date().getTime() / 1000
+            const isDay =
+              currentTime >= data.sys.sunrise && currentTime < data.sys.sunset
+            setDayNightImage(isDay ? dayIcon : nightIcon)
+          }
+
+          setWeatherData(response.data)
           updateWeatherImage(
             currentCondition,
             response.data.weather[0].description
@@ -47,42 +93,13 @@ const WeatherDetails = ({ city }) => {
           setError(
             'Failed to fetch weather data. Check your network or API key.'
           )
-          console.error(error) // Log the error for debugging
+          console.error(error)
         }
       }
+
       fetchWeatherData()
     }
-  }, [city])
-
-  const kelvinToFahrenheit = (kelvin) => {
-    return ((kelvin - 273.15) * 9) / 5 + 32
-  }
-
-  const updateWeatherImage = (condition, description) => {
-    console.log('Condition:', condition)
-    console.log('Description:', description)
-    if (
-      description.toLowerCase().includes('rain') ||
-      description.toLowerCase().includes('drizzle')
-    ) {
-      setWeatherImage(rainyImage)
-    } else if (description.toLowerCase().includes('snow')) {
-      setWeatherImage(snowyImage)
-    } else if (description.toLowerCase().includes('thunder')) {
-      setWeatherImage(thunderImage)
-    } else if (description.toLowerCase().includes('cloud')) {
-      setWeatherImage(cloudyImage)
-    } else {
-      setWeatherImage(weatherImages[condition] || weatherImages.default)
-    }
-  }
-
-  const updateDayNightImage = (data) => {
-    const currentTime = new Date().getTime() / 1000
-    const isDay =
-      currentTime >= data.sys.sunrise && currentTime < data.sys.sunset
-    setDayNightImage(isDay ? dayIcon : nightIcon)
-  }
+  }, [coordinates])
 
   return (
     <div>

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { BASE_URL, API_KEY } from '../../globals'
+import { API_KEY } from '../../globals'
 import './ForecastList.css'
 import rainyImage from '../../assets/rainy-7.svg'
 import snowyImage from '../../assets/snowy-1.svg'
 import thunderImage from '../../assets/thunder.svg'
 import cloudyImage from '../../assets/cloudy.svg'
-import weatherImage from '../../assets/weather.svg'
 import dayImage from '../../assets/day.svg'
 
 const weatherIcons = {
@@ -15,83 +14,67 @@ const weatherIcons = {
   Thunderstorm: thunderImage,
   Clouds: cloudyImage,
   Clear: dayImage,
-  default: weatherImage
+  default: dayImage
 }
 
 const ForecastList = ({ city }) => {
   const [dailyForecasts, setDailyForecasts] = useState({})
+  const [coordinates, setCoordinates] = useState(null)
 
   useEffect(() => {
-    if (city) {
-      const getForecastList = async () => {
-        const response = await axios.get(`${BASE_URL}/forecast`, {
-          params: {
-            q: city,
-            appid: API_KEY,
-            units: 'imperial'
-          }
-        })
-
-        const aggregatedByDay = response.data.list.reduce((acc, forecast) => {
-          const dateObj = new Date(forecast.dt * 1000)
-          const date = dateObj.toLocaleDateString()
-          const day = dateObj.toLocaleDateString('en-US', { weekday: 'long' })
-          const dateString = `${day}, ${date}`
-
-          if (!acc[dateString]) {
-            acc[dateString] = {
-              min: forecast.main.temp_min,
-              max: forecast.main.temp_max,
-              conditions: new Set([forecast.weather[0].main])
-            }
-          } else {
-            acc[dateString].min = Math.min(
-              acc[dateString].min,
-              forecast.main.temp_min
-            )
-            acc[dateString].max = Math.max(
-              acc[dateString].max,
-              forecast.main.temp_max
-            )
-            acc[dateString].conditions.add(forecast.weather[0].main)
-          }
-          return acc
-        }, {})
-
-        Object.keys(aggregatedByDay).forEach((date) => {
-          const conditionsArray = Array.from(aggregatedByDay[date].conditions)
-          aggregatedByDay[date].predominantCondition = conditionsArray.includes(
-            'Clear'
-          )
-            ? 'Clear'
-            : conditionsArray[0]
-        })
-
-        setDailyForecasts(aggregatedByDay)
-      }
-      getForecastList()
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude
+          const longitude = position.coords.longitude
+          setCoordinates({ latitude, longitude })
+          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`)
+        },
+        (error) => {
+          console.error('Error getting coordinates:', error)
+          // You can handle the error here, e.g., show a message to the user.
+        }
+      )
     }
-  }, [city])
+  }, [])
+
+  useEffect(() => {
+    const getForecastList = async () => {
+      try {
+        let response
+
+        if (coordinates) {
+          response = await axios.get(`/api/openweathermap/forecast`, {
+            params: {
+              lat: coordinates.latitude,
+              lon: coordinates.longitude,
+              appid: API_KEY,
+              units: 'imperial'
+            }
+          })
+        } else if (city) {
+          response = await axios.get(`/api/openweathermap/forecast`, {
+            params: {
+              q: city,
+              appid: API_KEY,
+              units: 'imperial'
+            }
+          })
+        }
+
+        // Rest of your code to process the response and set dailyForecasts state
+      } catch (error) {
+        console.error('Error fetching forecast data:', error)
+        // You can handle the error here, e.g., show a message to the user.
+      }
+    }
+
+    getForecastList()
+  }, [coordinates, city])
 
   return (
     <div className="forecast">
-      {/* <h2>Five Day Forecast</h2> */}
-      <div className="auto-grid-small">
-        {Object.keys(dailyForecasts).map((dateString) => {
-          const dayData = dailyForecasts[dateString]
-          const icon = weatherIcons[dayData.predominantCondition]
-
-          return (
-            <div key={dateString} className="forecast-day">
-              <h3>{dateString}</h3>
-              <img src={icon} alt={dayData.predominantCondition} />
-              <p>High of {dayData.max.toFixed(2)}°F</p>
-              <p>Low of {dayData.min.toFixed(2)}°F</p>
-              <p> {dayData.predominantCondition}</p>
-            </div>
-          )
-        })}
-      </div>
+      <div className="auto-grid-small">{/* Render daily forecasts here */}</div>
     </div>
   )
 }

@@ -15,7 +15,7 @@ const App = () => {
   return (
     <div className="App">
       <h2>Whatever the Weather</h2>
-      <p>Check the weather forecast for any city in the world.</p>
+      <p>Check the weather forecast.</p>
       <form onSubmit={handleCitySearch} className="search-bar">
         <input
           type="text"
